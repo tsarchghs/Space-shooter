@@ -3,7 +3,6 @@ canvas = document.getElementById("canvas");
 canvas.width = window.innerWidth - 50;
 canvas.height = window.window.innerHeight - 50;
 ctx = canvas.getContext("2d");
-
 class Player_SpaceShip{
 	constructor(ctx,x,y,w,h,speed,dt){
 		this.ctx = ctx;
@@ -53,6 +52,8 @@ document.addEventListener("keyup", (event) => {
 var lastTime;
 
 function gameLoop(){
+	canvas.width = window.innerWidth - 50;
+	canvas.height = window.window.innerHeight - 50;
 	ctx.clearRect(0,0,canvas.width,canvas.height);
     var now = Date.now();
     var dt = (now - lastTime) / 1000.0;
