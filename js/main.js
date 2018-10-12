@@ -23,6 +23,14 @@ class Player_SpaceShip{
 }
 
 player = new Player_SpaceShip(ctx,10,10,100,100);
+keyState = {};
+
+document.addEventListener("keydown", (event) => {
+	keyState[event.key] = true;
+})
+document.addEventListener("keyup", (event) => {
+	keyState[event.key] = false;
+})
 
 function gameLoop(){
 	player.draw;
