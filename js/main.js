@@ -53,7 +53,27 @@ class Player_SpaceShip{
 		this.lasers.push({"x":middle,"y":this.y - 15,"w":10,"h":30,"speed":1000});
 	}
 }
+class Asteroid{
+	constructor(ctx,x,y,w,h,speed,dt){
+		this.ctx = ctx;
+		this.image = document.getElementById("asteroid");;
+		this.x = x;
+		this.y = y;
+		this.w = w;
+		this.h = h;
+		this.speed = speed;
+		this.dt = dt;
+	}
+	get draw(){
+		this.reDraw();
+	}
+	reDraw(){
+		this.ctx.beginPath();
+		this.ctx.drawImage(this.image,this.x,this.y,this.w,this.h);
+	}
+}
 player = new Player_SpaceShip(ctx,100,200,100,100,100);
+
 keyState = {};
 
 document.addEventListener("keydown", (event) => {
@@ -64,6 +84,22 @@ document.addEventListener("keyup", (event) => {
 })
 
 var lastTime;
+var asteroids = [];
+asteroids_at_once = 5
+asteroids_thrown = 0
+
+function createAsteroid(){
+	if (asteroids_at_once > asteroids_thrown){
+		x = Math.floor((Math.random() * canvas.width) + 1);
+		asteroid = new Asteroid(ctx,x,-60,100,100,30);
+		asteroids.push(asteroid);
+		asteroids_thrown++;
+	}
+	window.setInterval(createAsteroid,1000);
+}
+
+window.setInterval(createAsteroid,1000);
+
 
 function gameLoop(){
 	canvas.width = window.innerWidth - 50;
@@ -72,9 +108,15 @@ function gameLoop(){
     var now = Date.now();
     var dt = (now - lastTime) / 1000.0;
 
+    for (var i in asteroids){
+    	asteroid = asteroids[i];
+    	asteroid.draw;
+    	asteroid.y += asteroid.speed * dt;	
+    }
     lastTime = now;
     player.dt = dt;
 	player.draw;
+	asteroid.draw;
 	player.move;
 	window.requestAnimationFrame(gameLoop);
 }
