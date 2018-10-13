@@ -72,8 +72,36 @@ class Asteroid{
 		this.ctx.drawImage(this.image,this.x,this.y,this.w,this.h);
 	}
 }
+class Text{
+	constructor(ctx,text,font,fillStyle,textAlign,x,y){
+		this.ctx = ctx;
+		this.text = text;
+		this.font = font;
+		this.fillStyle = fillStyle;
+		this.textAlign = textAlign;
+		this.x = x;
+		this.y = y;
+		this.append; // Making it easier to change score and health values
+	}
+	get draw(){
+		this.reDraw();
+	}
+	reDraw(){
+		var text = this.text;
+		this.ctx.font = this.font;
+		this.ctx.fillStyle = this.fillStyle;
+		this.ctx.textAlign = this.textAlign;
+		if (this.append || this.append == 0){
+			text += this.append;	
+		}
+		this.ctx.fillText(text,this.x,this.y);
+	}
+}
 player = new Player_SpaceShip(ctx,100,200,100,100,100);
-
+score = new Text(ctx,"score:","30px Comic Sans MS","red","left",10,25);
+health = new Text(ctx,"health:","30px Comic Sans MS","red","left",10,50);
+health.append = 100;
+score.append = 0;
 keyState = {};
 
 document.addEventListener("keydown", (event) => {
@@ -85,13 +113,14 @@ document.addEventListener("keyup", (event) => {
 
 var lastTime;
 var asteroids = [];
-asteroids_at_once = 5
-asteroids_thrown = 0
+var asteroids_at_once = 5
+var asteroids_thrown = 0
 
 function createAsteroid(){
 	if (asteroids_at_once > asteroids_thrown){
 		x = Math.floor((Math.random() * canvas.width) + 1);
-		asteroid = new Asteroid(ctx,x,-60,100,100,30);
+		y = Math.floor((Math.random() * 60) + 1) * -1;
+		asteroid = new Asteroid(ctx,x,y,100,100,300);
 		asteroids.push(asteroid);
 		asteroids_thrown++;
 	}
@@ -105,13 +134,18 @@ function gameLoop(){
 	canvas.width = window.innerWidth - 50;
 	canvas.height = window.window.innerHeight - 50;
 	ctx.clearRect(0,0,canvas.width,canvas.height);
+	score.draw;
+	health.draw;
     var now = Date.now();
     var dt = (now - lastTime) / 1000.0;
 
     for (var i in asteroids){
     	asteroid = asteroids[i];
     	asteroid.draw;
-    	asteroid.y += asteroid.speed * dt;	
+    	asteroid.y += asteroid.speed * dt;
+    	if (asteroid.y > canvas.height){
+    		delete asteroids[i];
+    	}
     }
     lastTime = now;
     player.dt = dt;
