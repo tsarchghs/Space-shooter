@@ -5,11 +5,19 @@ canvas.height = window.window.innerHeight - 50;
 ctx = canvas.getContext("2d");
 class Player_SpaceShip{
 	constructor(ctx,x,y,w,h,speed){
+		this.destroyed = false;
 		this.ctx = ctx;
 		this.image = new Image();
 		this.image.src = "https://mbtskoudsalg.com/images/space-ship-sprite-png.png";
 		this.laser_image = new Image();
 		this.laser_image.src = "https://mbtskoudsalg.com/images/laser-sprite-png-2.png";
+		this.explosion_images = []
+		for (var x=1;x<=27;x++){
+			var explosion_img = new Image();
+			explosion_img.src = `img/explosions/explosion_${String(x)}.png`;
+			this.explosion_images.push(explosion_img);
+		}
+		console.log(this.explosion_images);
 		this.x = x;
 		this.y = y;
 		this.w = w;
@@ -22,16 +30,24 @@ class Player_SpaceShip{
 		this.reDraw();
 	}
 	reDraw(){
-		this.ctx.beginPath();
-		this.ctx.drawImage(this.image,this.x,this.y,this.w,this.h);
-		for (var i in this.lasers){
-			var laser = this.lasers[i];	
-			if (this.lasers[i].y < 0){
-				this.lasers.splice(i,1);
+		if (!this.destroyed) {
+			this.ctx.beginPath();
+			this.ctx.drawImage(this.image,this.x,this.y,this.w,this.h);
+			for (var i in this.lasers){
+				var laser = this.lasers[i];	
+				if (this.lasers[i].y < 0){
+					this.lasers.splice(i,1);
+				}
+				if (this.lasers[i]){
+					this.ctx.drawImage(this.laser_image,laser.x,laser.y,laser.w,laser.h);
+					this.lasers[i].y -= laser.speed * this.dt;
+				}
 			}
-			if (this.lasers[i]){
-				this.ctx.drawImage(this.laser_image,laser.x,laser.y,laser.w,laser.h);
-				this.lasers[i].y -= laser.speed * this.dt;
+		} else {
+			if (this.explosion_images[0]){
+				this.ctx.beginPath();
+				this.ctx.drawImage(this.explosion_images[0],this.x,this.y,this.w,this.h);
+				this.explosion_images.splice(0,1);
 			}
 		}
 	}
@@ -39,20 +55,22 @@ class Player_SpaceShip{
 		this.move_player();
 	}
 	move_player(){
-		if (keyState["ArrowUp"] || keyState["w"]){
-			this.y -= this.speed * this.dt;
-		}
-		if (keyState["ArrowLeft"] || keyState["a"]){
-			this.x -= this.speed * this.dt;
-		}
-		if (keyState["ArrowDown"] || keyState["s"]){
-			this.y += this.speed * this.dt;
-		}
-		if (keyState["ArrowRight"] || keyState["d"]){
-			this.x += this.speed * this.dt;
-		}
-		if (keyState[" "]) {
-			this.shoot();
+		if (!this.destroyed){
+			if (keyState["ArrowUp"] || keyState["w"]){
+				this.y -= this.speed * this.dt;
+			}
+			if (keyState["ArrowLeft"] || keyState["a"]){
+				this.x -= this.speed * this.dt;
+			}
+			if (keyState["ArrowDown"] || keyState["s"]){
+				this.y += this.speed * this.dt;
+			}
+			if (keyState["ArrowRight"] || keyState["d"]){
+				this.x += this.speed * this.dt;
+			}
+			if (keyState[" "]) {
+				this.shoot();
+			}
 		}
 	}
 	shoot(){
@@ -62,8 +80,15 @@ class Player_SpaceShip{
 }
 class Asteroid{
 	constructor(ctx,x,y,w,h,speed,dt){
+		this.destroyed = false;
 		this.ctx = ctx;
-		this.image = document.getElementById("asteroid");;
+		this.image = document.getElementById("asteroid");
+		this.explosion_images = []
+		for (var x=1;x<=27;x++){
+			var explosion_img = new Image();
+			explosion_img.src = `img/explosions/explosion_${String(x)}.png`;
+			this.explosion_images.push(explosion_img);
+		}
 		this.x = x;
 		this.y = y;
 		this.w = w;
@@ -75,8 +100,16 @@ class Asteroid{
 		this.reDraw();
 	}
 	reDraw(){
-		this.ctx.beginPath();
-		this.ctx.drawImage(this.image,this.x,this.y,this.w,this.h);
+		if (!this.destroyed){
+			this.ctx.beginPath();
+			this.ctx.drawImage(this.image,this.x,this.y,this.w,this.h);
+		} else {
+			if (this.explosion_images[0]){
+				this.ctx.beginPath();
+				this.ctx.drawImage(this.explosion_images[0],this.x,this.y,this.w,this.h);
+				this.explosion_images.splice(0,1);
+			}
+		}
 	}
 }
 class Text{
@@ -154,6 +187,8 @@ function createAsteroid(dt){
 			x = Math.floor((Math.random() * canvas.width) + 1);
 			y = Math.floor((Math.random() * 60) + 1) * -1;
 			asteroid = new Asteroid(ctx,x,y,100,100,300);
+			asteroid.x = x;
+			asteroid.y = y;
 			asteroids.push(asteroid);
 			asteroids_thrown++;
 		}
@@ -167,6 +202,7 @@ function gameLoop(){
 	canvas.height = window.window.innerHeight - 50;
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 	if (!health.append){
+		player.destroyed = true;
 		gameOver.x = canvas.width/2
 		gameOver.y = canvas.height/2
 		score.x = gameOver.x - 50;
@@ -178,20 +214,21 @@ function gameLoop(){
 	}
 	if (asteroids){
 		for (var asteroid in asteroids){
-			CollisionDetector.rect1 = asteroids[asteroid];
-			for (var i in player.lasers){
-				laser = player.lasers[i];
-				CollisionDetector.rect2 = laser;
-				if (CollisionDetector.get_rect_rect_collision){
-					if (health.append){
-						score.append += 10;
+			if (!asteroids[asteroid].destroyed){
+				CollisionDetector.rect1 = asteroids[asteroid];
+				for (var i in player.lasers){
+					laser = player.lasers[i];
+					CollisionDetector.rect2 = laser;
+					if (CollisionDetector.get_rect_rect_collision){
+						if (health.append){
+							score.append += 10;
+						}
+						asteroids[asteroid].destroyed = true;
+						player.lasers.splice(i,1);
 					}
-					asteroids.splice(asteroid,1);
-					player.lasers.splice(i,1);
 				}
 			}
 		}
-
 	}
 	score.draw;
 	if (health.append){
@@ -205,7 +242,7 @@ function gameLoop(){
     	asteroid.draw;
     	asteroid.y += asteroid.speed * dt;
     	if (asteroid.y > canvas.height){
-    		if (health.append) {
+    		if (health.append && !asteroid.destroyed) {
     			health.append -= 10;
     		}
     		asteroids.splice(asteroid,1);
