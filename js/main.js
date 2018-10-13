@@ -11,6 +11,7 @@ class Player_SpaceShip{
 		this.image.src = "img/player/player_ship.png";
 		this.laser_image = new Image();
 		this.laser_image.src = "img/player/lasers/lv_1.png";
+		this.shoot_audio = new Audio("audio/lasers/sfx_laser2.ogg");
 		this.explosion_images = []
 		for (var x=1;x<=27;x++){
 			var explosion_img = new Image();
@@ -73,8 +74,10 @@ class Player_SpaceShip{
 		}
 	}
 	shoot(){
+		this.shoot_audio.currentTime = 0;
 		var middle = this.x + this.w - (this.w / 2) - 5;
 		this.lasers.push({"x":middle,"y":this.y - 25,"w":10,"h":30,"speed":1000});
+		this.shoot_audio.play();
 	}
 }
 class Asteroid{
