@@ -192,20 +192,23 @@ class Health{
 		this.ctx = ctx;
 		this.x = x;
 		this.y = y;
-		this.health ; health;
+		this.w = w;
+		this.h = h;
+		this.health = health;
 		this.health_image = new Image();
 		this.health_image.src = "img/ui/player/playerLife.png";
-		console.log(this.health_image);
 	}
 	get draw(){
 		this.reDraw();
 	}
 	reDraw(){
-		var x = this.x;
-		for (var i=0;i<10;i++){
-			this.ctx.beginPath();
-			this.ctx.drawImage(this.health_image,x,this.y,this.w,this.h);
-			x += this.w;
+		if (this.health_image.complete){
+			var x = this.x;
+			for (var i=1;i <= this.health;i++){
+				this.ctx.beginPath();
+				this.ctx.drawImage(this.health_image,x,this.y,this.w,this.h);	
+				x += this.w;
+			}
 		}
 	}
 }
@@ -219,13 +222,11 @@ document.addEventListener("keyup", (event) => {
 
 player = new Player_SpaceShip(ctx,300,500,100,70,500);
 player.x = canvas.width/2 - 50;
-health = new Text(ctx,"HEALTH:","30px 'Anton', sans-serif","gray","left",10,50);
-health.append = 100;
 gameOver = new Text(ctx,"Game Over!","80px 'Anton', sans-serif","red","center",canvas.width/2,canvas.height/2);
 CollisionDetector = new CollisionDetection();
 keyState = [];
 score = new Score(ctx,canvas.width/2,10,15,20,30);
-healthBeauty = new Health(ctx,100,200,100,300)
+health = new Health(ctx,10,10,30,30);
 
 var lastTime;
 var asteroids = [];
@@ -252,9 +253,9 @@ function gameLoop(){
 	canvas.width = window.innerWidth - 50;
 	canvas.height = window.window.innerHeight - 50;
 	ctx.clearRect(0,0,canvas.width,canvas.height);
+	health.draw;
 	score.draw;
-	healthBeauty.draw;
-	if (!health.append){
+	if (!health.health){
 		player.destroyed = true;
 		gameOver.x = canvas.width/2
 		gameOver.y = canvas.height/2
@@ -272,7 +273,7 @@ function gameLoop(){
 					laser = player.lasers[i];
 					CollisionDetector.rect2 = laser;
 					if (CollisionDetector.get_rect_rect_collision){
-						if (health.append){
+						if (health.health){
 							score.score += 100;
 						}
 						asteroids[asteroid].destroyed = true;
@@ -282,7 +283,7 @@ function gameLoop(){
 			}
 		}
 	}
-	if (health.append){
+	if (health.health){
 		health.draw;
 	}
     var now = Date.now();
@@ -293,8 +294,8 @@ function gameLoop(){
     	asteroid.draw;
     	asteroid.y += asteroid.speed * dt;
     	if (asteroid.y > canvas.height){
-    		if (health.append && !asteroid.destroyed) {
-    			health.append -= 10;
+    		if (health.health && !asteroid.destroyed) {
+    			health.health -= 1;
     		}
     		asteroids.splice(asteroid,1);
     	}
