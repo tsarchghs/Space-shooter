@@ -165,6 +165,8 @@ function gameLoop(){
 	canvas.height = window.window.innerHeight - 50;
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 	if (!health.append){
+		gameOver.x = canvas.width/2
+		gameOver.y = canvas.height/2
 		score.x = gameOver.x - 50;
 		score.y = gameOver.y + 30;
 		gameOver.draw;
