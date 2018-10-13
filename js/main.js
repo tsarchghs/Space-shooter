@@ -144,6 +144,7 @@ function gameLoop(){
     	asteroid.draw;
     	asteroid.y += asteroid.speed * dt;
     	if (asteroid.y > canvas.height){
+    		health.append -= 10;
     		delete asteroids[i];
     	}
     }
