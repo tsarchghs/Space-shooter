@@ -8,16 +8,15 @@ class Player_SpaceShip{
 		this.destroyed = false;
 		this.ctx = ctx;
 		this.image = new Image();
-		this.image.src = "https://mbtskoudsalg.com/images/space-ship-sprite-png.png";
+		this.image.src = "img/player/player_ship.png";
 		this.laser_image = new Image();
-		this.laser_image.src = "https://mbtskoudsalg.com/images/laser-sprite-png-2.png";
+		this.laser_image.src = "img/player/lasers/lv_1.png";
 		this.explosion_images = []
 		for (var x=1;x<=27;x++){
 			var explosion_img = new Image();
 			explosion_img.src = `img/explosions/explosion_${String(x)}.png`;
 			this.explosion_images.push(explosion_img);
 		}
-		console.log(this.explosion_images);
 		this.x = x;
 		this.y = y;
 		this.w = w;
@@ -75,7 +74,7 @@ class Player_SpaceShip{
 	}
 	shoot(){
 		var middle = this.x + this.w - (this.w / 2) - 5;
-		this.lasers.push({"x":middle,"y":this.y - 15,"w":10,"h":30,"speed":1000});
+		this.lasers.push({"x":middle,"y":this.y - 25,"w":10,"h":30,"speed":1000});
 	}
 }
 class Asteroid{
@@ -160,14 +159,42 @@ class CollisionDetection{
 		}
 	}
 }
-player = new Player_SpaceShip(ctx,100,200,100,100,500);
+class Score{
+	constructor(ctx,x,y,score=0){
+		this.ctx = ctx;
+		this.x = x;
+		this.y = y;
+		this.score = score;
+		this.number_images = {};
+		for (var x=0;x<10;x++){
+			var number_image = new Image();
+			number_image.src = `img/ui/numbers/numeral${x}.png`
+			this.number_images[x] = number_image;
+		}
+	}
+	get draw(){
+		this.reDraw();
+	}
+	reDraw(){
+		var scoreNumbers = Array.from(String(this.score));
+		var x = this.x;
+		var y = this.y;
+		for (var n in scoreNumbers){
+			this.ctx.beginPath();
+			this.ctx.drawImage(this.number_images[scoreNumbers[n]],x,y,20,30);
+			x += 25;
+		}
+	}
+}
+
+player = new Player_SpaceShip(ctx,100,200,100,70,500);
 score = new Text(ctx,"score:","30px Comic Sans MS","red","left",10,25);
 health = new Text(ctx,"health:","30px Comic Sans MS","red","left",10,50);
 health.append = 100;
-score.append = 0;
 gameOver = new Text(ctx,"Game Over!","30px Comic Sans MS","red","center",canvas.width/2,canvas.height/2);
 CollisionDetector = new CollisionDetection();
 keyState = [];
+scoreBeaty = new Score(ctx,canvas.width/2,10,15);
 
 document.addEventListener("keydown", (event) => {
 	keyState[event.key] = true;
@@ -186,13 +213,13 @@ function createAsteroid(dt){
 		if (asteroids_at_once > asteroids_thrown){
 			x = Math.floor((Math.random() * canvas.width) + 1);
 			y = Math.floor((Math.random() * 60) + 1) * -1;
-			asteroid = new Asteroid(ctx,x,y,100,100,300);
+			asteroid = new Asteroid(ctx,x,y,50,50,300);
 			asteroid.x = x;
 			asteroid.y = y;
 			asteroids.push(asteroid);
 			asteroids_thrown++;
 		}
-		asteroids_thrown -= 2 * dt;
+		asteroids_thrown -= asteroids_at_once * dt;
 	}
 }
 
@@ -201,16 +228,16 @@ function gameLoop(){
 	canvas.width = window.innerWidth - 50;
 	canvas.height = window.window.innerHeight - 50;
 	ctx.clearRect(0,0,canvas.width,canvas.height);
+	scoreBeaty.draw;
 	if (!health.append){
 		player.destroyed = true;
 		gameOver.x = canvas.width/2
 		gameOver.y = canvas.height/2
-		score.x = gameOver.x - 50;
-		score.y = gameOver.y + 30;
+		scoreBeaty.x = gameOver.x - 50;
+		scoreBeaty.y = gameOver.y + 30;
 		gameOver.draw;
 	} else {
-		score.x = 10;
-		score.y = 25;
+		
 	}
 	if (asteroids){
 		for (var asteroid in asteroids){
@@ -221,7 +248,7 @@ function gameLoop(){
 					CollisionDetector.rect2 = laser;
 					if (CollisionDetector.get_rect_rect_collision){
 						if (health.append){
-							score.append += 10;
+							scoreBeaty.score += 10;
 						}
 						asteroids[asteroid].destroyed = true;
 						player.lasers.splice(i,1);
@@ -230,7 +257,6 @@ function gameLoop(){
 			}
 		}
 	}
-	score.draw;
 	if (health.append){
 		health.draw;
 	}
