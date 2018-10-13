@@ -13,6 +13,7 @@ class Player_SpaceShip{
 		this.laser_image.src = "img/player/lasers/lv_1.png";
 		this.shoot_audio = new Audio("audio/lasers/sfx_laser2.ogg");
 		this.explosion_images = []
+		this.explosion_audio = new Audio("audio/player/explosion.mp3");
 		for (var x=1;x<=27;x++){
 			var explosion_img = new Image();
 			explosion_img.src = `img/explosions/explosion_${String(x)}.png`;
@@ -45,9 +46,13 @@ class Player_SpaceShip{
 			}
 		} else {
 			if (this.explosion_images[0]){
+				this.explosion_audio.play();
 				this.ctx.beginPath();
 				this.ctx.drawImage(this.explosion_images[0],this.x,this.y,this.w,this.h);
 				this.explosion_images.splice(0,1);
+			} else if (this.explosion_audio.currentTime > 0 && !this.explosion_audio.paused) {
+				this.explosion_audio.currentTime = 0;
+				this.explosion_audio.pause();
 			}
 		}
 	}
