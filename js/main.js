@@ -188,13 +188,12 @@ class Score{
 }
 
 player = new Player_SpaceShip(ctx,100,200,100,70,500);
-score = new Text(ctx,"score:","30px Comic Sans MS","red","left",10,25);
-health = new Text(ctx,"health:","30px Comic Sans MS","red","left",10,50);
+health = new Text(ctx,"health:","30px 'Anton', sans-serif","gray","left",10,50);
 health.append = 100;
-gameOver = new Text(ctx,"Game Over!","30px Comic Sans MS","red","center",canvas.width/2,canvas.height/2);
+gameOver = new Text(ctx,"Game Over!","80px 'Anton', sans-serif","red","center",canvas.width/2,canvas.height/2);
 CollisionDetector = new CollisionDetection();
 keyState = [];
-scoreBeaty = new Score(ctx,canvas.width/2,10,15);
+score = new Score(ctx,canvas.width/2,10,15);
 
 document.addEventListener("keydown", (event) => {
 	keyState[event.key] = true;
@@ -228,13 +227,13 @@ function gameLoop(){
 	canvas.width = window.innerWidth - 50;
 	canvas.height = window.window.innerHeight - 50;
 	ctx.clearRect(0,0,canvas.width,canvas.height);
-	scoreBeaty.draw;
+	score.draw;
 	if (!health.append){
 		player.destroyed = true;
 		gameOver.x = canvas.width/2
 		gameOver.y = canvas.height/2
-		scoreBeaty.x = gameOver.x - 50;
-		scoreBeaty.y = gameOver.y + 30;
+		score.x = gameOver.x - 50;
+		score.y = gameOver.y + 30;
 		gameOver.draw;
 	} else {
 		
@@ -248,7 +247,7 @@ function gameLoop(){
 					CollisionDetector.rect2 = laser;
 					if (CollisionDetector.get_rect_rect_collision){
 						if (health.append){
-							scoreBeaty.score += 10;
+							score.score += 10;
 						}
 						asteroids[asteroid].destroyed = true;
 						player.lasers.splice(i,1);
