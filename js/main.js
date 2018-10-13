@@ -183,6 +183,7 @@ function gameLoop(){
 						score.append += 10;
 					}
 					asteroids.splice(asteroid,1);
+					player.lasers.splice(i,1);
 				}
 			}
 		}
