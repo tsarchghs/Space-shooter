@@ -6,7 +6,10 @@ ctx = canvas.getContext("2d");
 class Player_SpaceShip{
 	constructor(ctx,x,y,w,h,speed){
 		this.ctx = ctx;
-		this.image = document.getElementById("player_spaceship_img");;
+		this.image = new Image();
+		this.image.src = "https://mbtskoudsalg.com/images/space-ship-sprite-png.png";
+		this.laser_image = new Image();
+		this.laser_image.src = "https://mbtskoudsalg.com/images/laser-sprite-png-2.png";
 		this.x = x;
 		this.y = y;
 		this.w = w;
@@ -19,7 +22,6 @@ class Player_SpaceShip{
 		this.reDraw();
 	}
 	reDraw(){
-		var laser_image = document.getElementById("laser_image");
 		this.ctx.beginPath();
 		this.ctx.drawImage(this.image,this.x,this.y,this.w,this.h);
 		for (var i in this.lasers){
@@ -28,7 +30,7 @@ class Player_SpaceShip{
 				this.lasers.splice(i,1);
 			}
 			if (this.lasers[i]){
-				this.ctx.drawImage(laser_image,laser.x,laser.y,laser.w,laser.h);
+				this.ctx.drawImage(this.laser_image,laser.x,laser.y,laser.w,laser.h);
 				this.lasers[i].y -= laser.speed * this.dt;
 			}
 		}
