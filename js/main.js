@@ -130,8 +130,9 @@ score = new Text(ctx,"score:","30px Comic Sans MS","red","left",10,25);
 health = new Text(ctx,"health:","30px Comic Sans MS","red","left",10,50);
 health.append = 100;
 score.append = 0;
-keyState = {};
+gameOver = new Text(ctx,"Game Over!","30px Comic Sans MS","red","center",canvas.width/2,canvas.height/2);
 CollisionDetector = new CollisionDetection();
+keyState = [];
 
 document.addEventListener("keydown", (event) => {
 	keyState[event.key] = true;
@@ -142,24 +143,35 @@ document.addEventListener("keyup", (event) => {
 
 var lastTime;
 var asteroids = [];
-var asteroids_at_once = 5
+var asteroids_at_once = 2
 var asteroids_thrown = 0
 
-function createAsteroid(){
-	if (asteroids_at_once > asteroids_thrown){
-		x = Math.floor((Math.random() * canvas.width) + 1);
-		y = Math.floor((Math.random() * 60) + 1) * -1;
-		asteroid = new Asteroid(ctx,x,y,100,100,300);
-		asteroids.push(asteroid);
-		asteroids_thrown++;
+function createAsteroid(dt){
+	if (dt){
+		if (asteroids_at_once > asteroids_thrown){
+			x = Math.floor((Math.random() * canvas.width) + 1);
+			y = Math.floor((Math.random() * 60) + 1) * -1;
+			asteroid = new Asteroid(ctx,x,y,100,100,300);
+			asteroids.push(asteroid);
+			asteroids_thrown++;
+		}
+		asteroids_thrown -= 2 * dt;
 	}
-	window.setInterval(createAsteroid,1000);
 }
-
-window.setInterval(createAsteroid,1000);
 
 
 function gameLoop(){
+	canvas.width = window.innerWidth - 50;
+	canvas.height = window.window.innerHeight - 50;
+	ctx.clearRect(0,0,canvas.width,canvas.height);
+	if (!health.append){
+		score.x = gameOver.x - 50;
+		score.y = gameOver.y + 30;
+		gameOver.draw;
+	} else {
+		score.x = 10;
+		score.y = 25;
+	}
 	if (asteroids){
 		for (var asteroid in asteroids){
 			CollisionDetector.rect1 = asteroids[asteroid];
@@ -167,18 +179,19 @@ function gameLoop(){
 				laser = player.lasers[i];
 				CollisionDetector.rect2 = laser;
 				if (CollisionDetector.get_rect_rect_collision){
-					score.append += 10;
+					if (health.append){
+						score.append += 10;
+					}
 					asteroids.splice(asteroid,1);
 				}
 			}
 		}
 
 	}
-	canvas.width = window.innerWidth - 50;
-	canvas.height = window.window.innerHeight - 50;
-	ctx.clearRect(0,0,canvas.width,canvas.height);
 	score.draw;
-	health.draw;
+	if (health.append){
+		health.draw;
+	}
     var now = Date.now();
     var dt = (now - lastTime) / 1000.0;
 
@@ -187,7 +200,9 @@ function gameLoop(){
     	asteroid.draw;
     	asteroid.y += asteroid.speed * dt;
     	if (asteroid.y > canvas.height){
-    		health.append -= 10;
+    		if (health.append) {
+    			health.append -= 10;
+    		}
     		asteroids.splice(asteroid,1);
     	}
     }
@@ -195,6 +210,7 @@ function gameLoop(){
     player.dt = dt;
 	player.draw;
 	player.move;
+	createAsteroid(dt);
 	window.requestAnimationFrame(gameLoop);
 }
 window.requestAnimationFrame(gameLoop);
