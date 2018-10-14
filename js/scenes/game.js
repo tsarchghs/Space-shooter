@@ -17,6 +17,8 @@ class Game{
 		this.resetValues();
 	}
 	resetValues(){
+		this.player.x = canvas.width/2 - 50;
+		this.player.y = canvas.height - 100;
 		this.player.destroyed = false;
 		this.player.resetExplosion;
 		this.score.score = 0;

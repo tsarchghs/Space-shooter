@@ -37,12 +37,11 @@ document.addEventListener("keydown", (event) => {
 document.addEventListener("keyup", (event) => {
 	keyState[event.key] = false;
 })
-player = new Player_SpaceShip(ctx,300,500,100,70,500);
-player.x = canvas.width/2 - 50;
+player = new Player_SpaceShip(ctx,canvas.width/2 - 50,canvas.height - 100,100,70,500);
 gameOver = new Text(ctx,"Game Over!","80px 'Anton', sans-serif","red","center",canvas.width/2,canvas.height/2);
 CollisionDetector = new CollisionDetection();
 keyState = [];
-score = new Score(ctx,canvas.width/2,10,15,20,30);
+score = new Score(ctx,canvas.width/2,10,15,20,0);
 health = new Health(ctx,10,10,30,30);
 healthPickUp = new HealthPickup(ctx,300,200,30,30,"img/ui/player/playerLife.png");
 playButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/playButton.png");
