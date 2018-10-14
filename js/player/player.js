@@ -8,13 +8,8 @@ class Player_SpaceShip{
 		this.laser_image = new Image();
 		this.laser_image.src = "img/player/lasers/lv_1.png";
 		this.shoot_audio = new Audio("audio/lasers/sfx_laser2.ogg");
-		this.explosion_images = []
+		this.explosion_images = [];
 		this.explosion_audio = new Audio("audio/player/explosion.mp3");
-		for (var x=1;x<=27;x++){
-			var explosion_img = new Image();
-			explosion_img.src = `img/explosions/explosion_${String(x)}.png`;
-			this.explosion_images.push(explosion_img);
-		}
 		this.x = x;
 		this.y = y;
 		this.w = w;
@@ -22,6 +17,7 @@ class Player_SpaceShip{
 		this.speed = speed;
 		this.dt;
 		this.lasers = []
+		this.setExplosionVar();
 	}
 	get draw(){
 		this.reDraw();
@@ -72,6 +68,17 @@ class Player_SpaceShip{
 			if (keyState[" "]) {
 				this.shoot();
 			}
+		}
+	}
+	get resetExplosion(){
+		this.setExplosionVar();
+	}
+	setExplosionVar(){
+		for (var x=1;x<=27;x++){
+			var explosion_img = new Image();
+			explosion_img.src = `img/explosions/explosion_${String(x)}.png`;
+			this.explosion_images.push(explosion_img
+			);
 		}
 	}
 	shoot(){
