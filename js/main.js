@@ -4,7 +4,8 @@ canvas.width = window.innerWidth - 50;
 canvas.height = window.window.innerHeight - 50;
 ctx = canvas.getContext("2d");
 class Player_SpaceShip{
-	constructor(ctx,x,y,w,h,speed){
+	constructor(ctx,x,y,w,h,speed,shoot_damage=100){
+		this.shoot_damage = shoot_damage;
 		this.destroyed = false;
 		this.ctx = ctx;
 		this.image = new Image();
@@ -86,7 +87,8 @@ class Player_SpaceShip{
 	}
 }
 class Asteroid{
-	constructor(ctx,x,y,w,h,speed,dt){
+	constructor(ctx,health,x,y,w,h,speed,dt){
+		this.health = health;
 		this.destroyed = false;
 		this.ctx = ctx;
 		this.image = document.getElementById("asteroid");
@@ -107,6 +109,9 @@ class Asteroid{
 		this.reDraw();
 	}
 	reDraw(){
+		if (!this.health){
+			this.destroyed = true;
+		}
 		if (!this.destroyed){
 			this.ctx.beginPath();
 			this.ctx.drawImage(this.image,this.x,this.y,this.w,this.h);
@@ -270,7 +275,7 @@ function createAsteroid(dt){
 		if (asteroids_at_once > asteroids_thrown){
 			x = Math.floor((Math.random() * canvas.width) + 1);
 			y = Math.floor((Math.random() * 60) + 1) * -1;
-			asteroid = new Asteroid(ctx,x,y,50,50,300);
+			asteroid = new Asteroid(ctx,100,x,y,50,50,300);
 			asteroid.x = x;
 			asteroid.y = y;
 			asteroids.push(asteroid);
@@ -333,10 +338,10 @@ function gameLoop(){
 					laser = player.lasers[i];
 					CollisionDetector.rect2 = laser;
 					if (CollisionDetector.get_rect_rect_collision){
-						if (health.health){
+						asteroids[asteroid].health -= player.shoot_damage;
+						if (!asteroids[asteroid].health  && health.health){
 							score.score += 100;
 						}
-						asteroids[asteroid].destroyed = true;
 						player.lasers.splice(i,1);
 					}
 				}
