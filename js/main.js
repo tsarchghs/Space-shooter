@@ -42,6 +42,7 @@ playButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/playButton.png
 infoButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/infoButton.png");
 settingsButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/settingsButton.png");
 playButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/playButton.png");
+replayButton = new Button(ctx,570,370,125,125,"img/ui/buttons/replayButton.png");
 buttons = [playButton];
 
 var lastTime;
@@ -56,7 +57,7 @@ var logo = new ImageClass(ctx,100,10,900,300,"img/ui/logo.png");
 
 show_game_scene = false;
 show_menu_scene = true;
-game_scene = new Game(player,health,score,pickups,asteroids,gameOver);
+game_scene = new Game(player,health,score,pickups,asteroids,gameOver,replayButton);
 function gameLoop(){
 	var now = Date.now();
     var dt = (now - lastTime) / 1000.0;

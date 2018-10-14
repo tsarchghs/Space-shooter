@@ -1,11 +1,12 @@
 class Game{
-	constructor(player,health,score,pickups,asteroids,gameOver){
+	constructor(player,health,score,pickups,asteroids,gameOver,replayButton){
 		this.player = player;
 		this.health = health;
 		this.score = score;
 		this.pickups = pickups;
 		this.asteroids = asteroids
 		this.gameOver = gameOver;
+		this.replayButton = replayButton;
 		this.dt = 0;
 	}
 	get draw(){
@@ -35,6 +36,7 @@ class Game{
 			this.score.x = gameOver.x - 50;
 			this.score.y = gameOver.y + 30;
 			this.gameOver.draw;
+			this.replayButton.draw;
 		} else {
 			
 		}
