@@ -47,6 +47,7 @@ class Game{
 			this.score.x = gameOver.x - 50;
 			this.score.y = gameOver.y + 30;
 			this.gameOver.draw;
+			this.replayButton.x = score.x - 20;
 			this.replayButton.draw;
 		} else {
 			

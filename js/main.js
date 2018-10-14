@@ -49,7 +49,7 @@ playButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/playButton.png
 infoButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/infoButton.png");
 settingsButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/settingsButton.png");
 playButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/playButton.png");
-replayButton = new Button(ctx,570,370,125,125,"img/ui/buttons/replayButton.png");
+replayButton = new Button(ctx,undefined,370,125,125,"img/ui/buttons/replayButton.png");
 buttons = [playButton,infoButton,infoButton,playButton,replayButton];
 
 var lastTime;
