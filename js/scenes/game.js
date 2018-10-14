@@ -51,12 +51,10 @@ class Game{
 		}
 		if (!this.health.health){
 			this.player.destroyed = true;
-			this.gameOver.x = canvas.width/2
-			this.gameOver.y = canvas.height/2
-			this.score.x = gameOver.x - 50;
-			this.score.y = gameOver.y + 30;
+			this.score.x = this.gameOver.x + (gameOver.w / 2) - 20;
+			this.score.y = this.gameOver.y + gameOver.h + 5;
 			this.gameOver.draw;
-			this.replayButton.x = score.x - 80;
+			this.replayButton.x = this.gameOver.x + (this.gameOver.w / 2) - 100;
 			this.homeButton.x = this.replayButton.x + this.replayButton.w + 5;
 			this.homeButton.draw;
 			this.replayButton.draw;
