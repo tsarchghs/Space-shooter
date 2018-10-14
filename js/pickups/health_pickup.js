@@ -19,3 +19,16 @@ class HealthPickup{
 		this.y += this.dt * this.drop_speed;
 	}
 }
+
+function createHealthPickUp(dt){
+	if (dt){
+		if (pickups_at_once > pickups_thrown){
+			x = Math.floor((Math.random() * canvas.width) + 1);
+			y = Math.floor((Math.random() * 60) + 1) * -1;
+			health_pickUp = new HealthPickup(ctx,x,y,30,30,"img/ui/player/playerLife.png");
+			pickups.push(["HealthPickup",health_pickUp]);
+			pickups_thrown = pickups_thrown_reset;
+		}
+		pickups_thrown -= pickups_at_once * dt;
+	}
+}

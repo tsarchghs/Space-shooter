@@ -50,18 +50,6 @@ var pickups_at_once = 1;
 var pickups_thrown = 10;
 var pickups_thrown_reset = 10;
 
-function createHealthPickUp(dt){
-	if (dt){
-		if (pickups_at_once > pickups_thrown){
-			x = Math.floor((Math.random() * canvas.width) + 1);
-			y = Math.floor((Math.random() * 60) + 1) * -1;
-			health_pickUp = new HealthPickup(ctx,x,y,30,30,"img/ui/player/playerLife.png");
-			pickups.push(["HealthPickup",health_pickUp]);
-			pickups_thrown = pickups_thrown_reset;
-		}
-		pickups_thrown -= pickups_at_once * dt;
-	}
-}
 show_game_scene = false;
 show_menu_scene = true;
 game_scene = new Game(player,health,score,pickups,asteroids,gameOver);
