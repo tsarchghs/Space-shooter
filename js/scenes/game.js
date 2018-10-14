@@ -13,6 +13,17 @@ class Game{
 		this.reDraw();
 	}
 	reDraw(){
+		this.player.dt = this.dt;
+		this.player.draw;
+		this.player.move;
+		if (this.replayButton.pressed){
+			this.player.destroyed = false;
+			this.player.resetExplosion;
+			this.score.score = 0;
+			this.health.health = 10;
+			this.score.y = 10;
+			this.replayButton.pressed = false;
+		}
 		this.health.draw;
 		this.score.draw;
 		for (var type_pickup in this.pickups){ // type_pickup means [0] for type pickup for [1]
@@ -73,9 +84,6 @@ class Game{
 	    		this.asteroids.splice(asteroid,1);
 	    	}
 	    }
-	    this.player.dt = this.dt;
-		this.player.draw;
-		this.player.move;
 		createAsteroid(this.dt);
 		createHealthPickUp(this.dt);
 	}
