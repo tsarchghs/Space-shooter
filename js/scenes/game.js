@@ -1,5 +1,5 @@
 class Game{
-	constructor(player,health,score,pickups,asteroids,gameOver,replayButton){
+	constructor(player,health,score,pickups,asteroids,gameOver,replayButton,homeButton){
 		this.player = player;
 		this.health = health;
 		this.score = score;
@@ -7,21 +7,28 @@ class Game{
 		this.asteroids = asteroids
 		this.gameOver = gameOver;
 		this.replayButton = replayButton;
+		this.homeButton = homeButton;
 		this.dt = 0;
 	}
 	get draw(){
 		this.reDraw();
+	}
+	get reset(){
+		this.resetValues();
+	}
+	resetValues(){
+		this.player.destroyed = false;
+		this.player.resetExplosion;
+		this.score.score = 0;
+		this.health.health = 10;
+		this.score.y = 10;
 	}
 	reDraw(){
 		this.player.dt = this.dt;
 		this.player.draw;
 		this.player.move;
 		if (this.replayButton.pressed){
-			this.player.destroyed = false;
-			this.player.resetExplosion;
-			this.score.score = 0;
-			this.health.health = 10;
-			this.score.y = 10;
+			this.resetValues();
 			this.replayButton.pressed = false;
 		}
 		this.health.draw;
@@ -47,10 +54,10 @@ class Game{
 			this.score.x = gameOver.x - 50;
 			this.score.y = gameOver.y + 30;
 			this.gameOver.draw;
-			this.replayButton.x = score.x - 20;
+			this.replayButton.x = score.x - 80;
+			this.homeButton.x = this.replayButton.x + this.replayButton.w + 5;
+			this.homeButton.draw;
 			this.replayButton.draw;
-		} else {
-			
 		}
 		if (this.asteroids){
 			for (var asteroid in this.asteroids){
@@ -70,10 +77,6 @@ class Game{
 				}
 			}
 		}
-		if (this.health.health){
-			this.health.draw;
-		}
-
 	    for (var i in this.asteroids){
 	    	asteroid = this.asteroids[i];
 	    	asteroid.draw;

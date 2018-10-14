@@ -50,7 +50,8 @@ infoButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/infoButton.png
 settingsButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/settingsButton.png");
 playButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/playButton.png");
 replayButton = new Button(ctx,undefined,370,125,125,"img/ui/buttons/replayButton.png");
-buttons = [playButton,infoButton,infoButton,playButton,replayButton];
+homeButton = new Button(ctx,undefined,370,125,125,"img/ui/buttons/homeButton.png");
+buttons = [playButton,infoButton,infoButton,playButton,replayButton,homeButton];
 
 var lastTime;
 var asteroids = [];
@@ -64,13 +65,19 @@ var logo = new ImageClass(ctx,100,10,900,300,"img/ui/logo.png");
 
 show_game_scene = false;
 show_menu_scene = true;
-game_scene = new Game(player,health,score,pickups,asteroids,gameOver,replayButton);
+game_scene = new Game(player,health,score,pickups,asteroids,gameOver,replayButton,homeButton);
 function gameLoop(){
 	var now = Date.now();
     var dt = (now - lastTime) / 1000.0;
 	canvas.width = window.innerWidth - 50;
 	canvas.height = window.window.innerHeight - 50;
 	ctx.clearRect(0,0,canvas.width,canvas.height);
+	if (homeButton.pressed){
+		show_game_scene = false;
+		show_menu_scene = true;
+		homeButton.pressed = false;
+		game_scene.reset;
+	}
 	if (show_game_scene){
 		game_scene.draw;
 		game_scene.dt = dt;
@@ -84,6 +91,7 @@ function gameLoop(){
 		settingsButton.x = infoButton.x + infoButton.w + 10;
 		settingsButton.draw;
 		if (playButton.pressed){
+			console.log("DSADS");
 			playButton.pressed = false;
 			show_menu_scene = false;
 			show_game_scene = true;
