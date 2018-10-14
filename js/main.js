@@ -15,15 +15,22 @@ function getMousePos(canvas, evt) {
 }
 window.addEventListener("mousemove", (event) => {
 	pos = getMousePos(canvas,event);
-	playButton.screenX = pos.x;
-	playButton.screenY = pos.y;
+	for (var button in buttons){
+		buttons[button].screenX = pos.x;
+		buttons[button].screenY = pos.y;
+	}
 });
 window.addEventListener("mouseup", (event) => {
-	playButton.mousePressed = false;
+	for (var button in buttons){
+		buttons[button].mousePressed = false;
+	}
 })
 window.addEventListener("mousedown", (event) => {
-	playButton.mousePressed = true;
+	for (var button in buttons){
+		buttons[button].mousePressed = true;
+	}
 })
+
 document.addEventListener("keydown", (event) => {
 	keyState[event.key] = true;
 })
@@ -43,7 +50,7 @@ infoButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/infoButton.png
 settingsButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/settingsButton.png");
 playButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/playButton.png");
 replayButton = new Button(ctx,570,370,125,125,"img/ui/buttons/replayButton.png");
-buttons = [playButton];
+buttons = [playButton,infoButton,infoButton,playButton,replayButton];
 
 var lastTime;
 var asteroids = [];
