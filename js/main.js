@@ -77,8 +77,9 @@ function createHealthPickUp(dt){
 		pickups_thrown -= pickups_at_once * dt;
 	}
 }
-play_scene = false;
-menu_scene = true;
+show_game_scene = false;
+show_menu_scene = true;
+game_scene = new Game(player,health,score,pickups,asteroids,gameOver);
 
 function gameLoop(){
 	var now = Date.now();
@@ -87,77 +88,15 @@ function gameLoop(){
 	canvas.height = window.window.innerHeight - 50;
 	playButton.x = 500;
 	ctx.clearRect(0,0,canvas.width,canvas.height);
-	if (play_scene){
-		health.draw;
-		score.draw;
-		for (var type_pickup in pickups){ // type_pickup means [0] for type pickup for [1]
-			if (dt){
-				pickups[type_pickup][1].dt = dt;
-				pickups[type_pickup][1].draw;
-			}
-			CollisionDetector.rect1 = player;
-			CollisionDetector.rect2 = pickups[type_pickup][1];
-			if (CollisionDetector.get_rect_rect_collision){
-				if (type_pickup[0] = "HealthPickup"){
-					health.health += 1;
-				}
-				delete pickups[type_pickup];
-			}
-		}
-		if (!health.health){
-			player.destroyed = true;
-			gameOver.x = canvas.width/2
-			gameOver.y = canvas.height/2
-			score.x = gameOver.x - 50;
-			score.y = gameOver.y + 30;
-			gameOver.draw;
-		} else {
-			
-		}
-		if (asteroids){
-			for (var asteroid in asteroids){
-				if (!asteroids[asteroid].destroyed){
-					CollisionDetector.rect1 = asteroids[asteroid];
-					for (var i in player.lasers){
-						laser = player.lasers[i];
-						CollisionDetector.rect2 = laser;
-						if (CollisionDetector.get_rect_rect_collision){
-							asteroids[asteroid].health -= player.shoot_damage;
-							if (!asteroids[asteroid].health  && health.health){
-								score.score += 100;
-							}
-							player.lasers.splice(i,1);
-						}
-					}
-				}
-			}
-		}
-		if (health.health){
-			health.draw;
-		}
-
-	    for (var i in asteroids){
-	    	asteroid = asteroids[i];
-	    	asteroid.draw;
-	    	asteroid.y += asteroid.speed * dt;
-	    	if (asteroid.y > canvas.height){
-	    		if (health.health && !asteroid.destroyed) {
-	    			health.health -= 1;
-	    		}
-	    		asteroids.splice(asteroid,1);
-	    	}
-	    }
-	    player.dt = dt;
-		player.draw;
-		player.move;
-		createAsteroid(dt);
-		createHealthPickUp(dt);
-	} else if (menu_scene) {
+	if (show_game_scene){
+		game_scene.draw;
+		game_scene.dt = dt;
+	} else if (show_menu_scene) {
 		playButton.draw;
 		if (playButton.pressed){
 			playButton.pressed = false;
-			menu_scene = false;
-			play_scene = true;
+			show_menu_scene = false;
+			show_game_scene = true;
 		}
 	}
 	lastTime = now;
