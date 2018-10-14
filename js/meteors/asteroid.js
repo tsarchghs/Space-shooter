@@ -36,3 +36,17 @@ class Asteroid{
 		}
 	}
 }
+function createAsteroid(dt){
+	if (dt){
+		if (asteroids_at_once > asteroids_thrown){
+			x = Math.floor((Math.random() * canvas.width) + 1);
+			y = Math.floor((Math.random() * 60) + 1) * -1;
+			asteroid = new Asteroid(ctx,100,x,y,50,50,300);
+			asteroid.x = x;
+			asteroid.y = y;
+			asteroids.push(asteroid);
+			asteroids_thrown++;
+		}
+		asteroids_thrown -= asteroids_at_once * dt;
+	}
+}
