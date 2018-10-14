@@ -38,7 +38,10 @@ keyState = [];
 score = new Score(ctx,canvas.width/2,10,15,20,30);
 health = new Health(ctx,10,10,30,30);
 healthPickUp = new HealthPickup(ctx,300,200,30,30,"img/ui/player/playerLife.png");
-playButton = new Button(ctx,canvas.width/2,200,250,100,"img/ui/buttons/playButton.png");
+playButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/playButton.png");
+infoButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/infoButton.png");
+settingsButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/settingsButton.png");
+playButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/playButton.png");
 buttons = [playButton];
 
 var lastTime;
@@ -49,23 +52,29 @@ var asteroids_thrown = 0
 var pickups_at_once = 1;
 var pickups_thrown = 10;
 var pickups_thrown_reset = 10;
+var logo = new ImageClass(ctx,100,10,900,300,"img/ui/logo.png");
 
 show_game_scene = false;
 show_menu_scene = true;
 game_scene = new Game(player,health,score,pickups,asteroids,gameOver);
-
 function gameLoop(){
 	var now = Date.now();
     var dt = (now - lastTime) / 1000.0;
 	canvas.width = window.innerWidth - 50;
 	canvas.height = window.window.innerHeight - 50;
-	playButton.x = 500;
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 	if (show_game_scene){
 		game_scene.draw;
 		game_scene.dt = dt;
 	} else if (show_menu_scene) {
+		logo.x = canvas.width/2 - (logo.w / 2);
+		logo.draw;
+		playButton.x = canvas.width/2 - (playButton.w / 2) - 250;
 		playButton.draw;
+		infoButton.x = playButton.x + playButton.w + 10;
+		infoButton.draw;
+		settingsButton.x = infoButton.x + infoButton.w + 10;
+		settingsButton.draw;
 		if (playButton.pressed){
 			playButton.pressed = false;
 			show_menu_scene = false;
