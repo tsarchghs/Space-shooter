@@ -2,9 +2,17 @@
 <head>
 	<link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
 </head>
+<style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+  </style>
 <body>
 	<canvas id="canvas" style="background: url('img/background.png');">
 		<img src="img/meteors/meteorBrown_big3.png" id="asteroid">
+		   	<p>You're browser does not support the required functionality to play this game.</p>
+      		<p>Please update to a modern browser such as <a href="www.google.com/chrome/‎">Google Chrome</a> to play.</p>
 	</canvas>
 </body>
 <script type="text/javascript" src="js/player/player.js"></script>
@@ -14,5 +22,7 @@
 <script type="text/javascript" src="js/collision_detection.js"></script>
 <script type="text/javascript" src="js/meteors/asteroid.js"></script>
 <script type="text/javascript" src="js/pickups/health_pickup.js"></script>
+<script type="text/javascript" src="js/ui/button.js"></script>
+<script type="text/javascript" src="js/scenes/game.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 </html>
