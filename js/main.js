@@ -50,7 +50,7 @@ infoButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/infoButton.png
 settingsButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/settingsButton.png");
 playButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/playButton.png");
 replayButton = new Button(ctx,undefined,370,125,125,"img/ui/buttons/replayButton.png");
-homeButton = new Button(ctx,undefined,370,125,125,"img/ui/buttons/homeButton.png");
+homeButton = new Button(ctx,undefined,undefined,125,125,"img/ui/buttons/homeButton.png");
 buttons = [playButton,infoButton,infoButton,playButton,replayButton,homeButton];
 var lastTime;
 var asteroids = [];

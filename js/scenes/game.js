@@ -27,6 +27,7 @@ class Game{
 		this.score.y = 10;
 	}
 	reDraw(){
+		var canvas = document.getElementById("canvas")
 		this.player.dt = this.dt;
 		this.player.draw;
 		this.player.move;
@@ -34,7 +35,14 @@ class Game{
 			this.resetValues();
 			this.replayButton.pressed = false;
 		}
-		this.health.draw;
+		if (this.health.health){
+			this.homeButton.x = canvas.width - this.homeButton.w - 10;
+			this.homeButton.y = 30;
+			this.homeButton.w = 100;
+			this.homeButton.h = 100;
+			this.homeButton.draw;
+			this.health.draw;
+		}
 		this.score.draw;
 		for (var type_pickup in this.pickups){ // type_pickup means [0] for type pickup for [1]
 			if (this.dt){
@@ -57,6 +65,9 @@ class Game{
 			this.gameOver.draw;
 			this.replayButton.x = this.gameOver.x + (this.gameOver.w / 2) - 100;
 			this.homeButton.x = this.replayButton.x + this.replayButton.w + 5;
+			this.homeButton.y = replayButton.y
+			this.homeButton.w = 125;
+			this.homeButton.h = 125;
 			this.homeButton.draw;
 			this.replayButton.draw;
 		}
@@ -89,7 +100,7 @@ class Game{
 	    		this.asteroids.splice(asteroid,1);
 	    	}
 	    }
-		createAsteroid(this.dt);
+		createAsteroid(this.dt,score.score);
 		createHealthPickUp(this.dt);
 	}
 }
