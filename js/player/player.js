@@ -1,12 +1,15 @@
 class Player_SpaceShip{
-	constructor(ctx,x,y,w,h,speed,shoot_damage=100){
+	constructor(ctx,x,y,w,h,speed,
+				shoot_damage=100,
+				player_image_url="img/player/playerShip_lv1.png",
+				laser_image_url="img/player/lasers/laserRed.png"){
 		this.shoot_damage = shoot_damage;
 		this.destroyed = false;
 		this.ctx = ctx;
-		this.image = new Image();
-		this.image.src = "img/player/player_ship.png";
+		this.player_image = new Image();
+		this.player_image.src = player_image_url;
 		this.laser_image = new Image();
-		this.laser_image.src = "img/player/lasers/lv_1.png";
+		this.laser_image.src = laser_image_url;
 		this.shoot_audio = new Audio("audio/lasers/sfx_laser2.ogg");
 		this.explosion_images = [];
 		this.explosion_audio = new Audio("audio/player/explosion.mp3");
@@ -29,7 +32,7 @@ class Player_SpaceShip{
 		this.collision_detection.rect1 = this;
 		if (!this.destroyed) {
 			this.ctx.beginPath();
-			this.ctx.drawImage(this.image,this.x,this.y,this.w,this.h);
+			this.ctx.drawImage(this.player_image,this.x,this.y,this.w,this.h);
 			for (var i in this.lasers){
 				var laser = this.lasers[i];	
 				if (this.lasers[i].y < 0){
