@@ -1,8 +1,10 @@
 class Player_SpaceShip{
 	constructor(ctx,x,y,w,h,speed,
 				shoot_damage=100,
+				lv=1,
 				player_image_url="img/player/playerShip_lv1.png",
 				laser_image_url="img/player/lasers/laserRed.png"){
+		this.lv = lv;
 		this.shoot_damage = shoot_damage;
 		this.destroyed = false;
 		this.ctx = ctx;
@@ -40,7 +42,8 @@ class Player_SpaceShip{
 				}
 				if (this.lasers[i]){
 					this.ctx.drawImage(this.laser_image,laser.x,laser.y,laser.w,laser.h);
-					this.lasers[i].y -= laser.speed * this.dt;
+					this.lasers[i].x -= laser.x_speed * this.dt;
+					this.lasers[i].y -= laser.y_speed * this.dt;
 				}
 			}
 		} else {
@@ -90,9 +93,37 @@ class Player_SpaceShip{
 		}
 	}
 	shoot(){
-		this.shoot_audio.currentTime = 0;
-		var middle = this.x + this.w - (this.w / 2) - 5;
-		this.lasers.push({"x":middle,"y":this.y - 25,"w":10,"h":30,"speed":1000});
-		this.shoot_audio.play();
+		if (this.lv == 1){
+			this.shoot_audio.currentTime = 0;
+			var middle = this.x + this.w - (this.w / 2) - 5;
+			this.lasers.push({"x":middle,"y":this.y - 25,"w":10,"h":30,"x_speed":0,"y_speed":1000});
+			this.shoot_audio.play();
+		} else if (this.lv == 2){
+			this.shoot_audio.currentTime = 0;
+			var middle = this.x + this.w - (this.w / 2) - 5;
+			this.lasers.push({"x":middle,"y":this.y - 25,"w":12.5,"h":30,"x_speed":0,"y_speed":1000});
+			this.shoot_audio.play();
+		} else if (this.lv == 3){
+			this.shoot_audio.currentTime = 0;
+			var middle = this.x + this.w - (this.w / 2) - 5;
+			var left = {"x":this.x - (this.h / 2),"y":this.y + this.h}
+			var right = {"x":this.x + this.w - (this.h / 2),"y":this.y + this.h}
+			this.lasers.push({"x":middle,"y":this.y - 25,"w":12.5,"h":30,"x_speed":0,"y_speed":1000});
+			this.lasers.push({"x":left.x,"y":left.y,"w":30,"h":12.5,"x_speed":-2000,"y_speed":0});
+			this.lasers.push({"x":right.x,"y":right.y,"w":30,"h":12.5,"x_speed":2000,"y_speed":0});
+			this.shoot_audio.play();
+		}
+	}
+	get get_level_up(){
+		this.level_up();
+	}
+	level_up(){
+		if (this.lv < 3){
+			this.lv += 1;
+			this.player_image.src = `img/player/playerShip_lv${this.lv}.png`;
+			this.shoot_damage += 100
+			this.w += 10;
+			this.h += 10;
+		}
 	}
 }
