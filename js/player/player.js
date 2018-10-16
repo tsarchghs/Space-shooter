@@ -18,11 +18,15 @@ class Player_SpaceShip{
 		this.dt;
 		this.lasers = []
 		this.setExplosionVar();
+		this.canvas = document.getElementById("canvas");
+		this.collision_detection = new CollisionDetection();
+		this.collision_detection.canvas_height = this.canvas.height;
 	}
 	get draw(){
 		this.reDraw();
 	}
 	reDraw(){
+		this.collision_detection.rect1 = this;
 		if (!this.destroyed) {
 			this.ctx.beginPath();
 			this.ctx.drawImage(this.image,this.x,this.y,this.w,this.h);
@@ -53,13 +57,14 @@ class Player_SpaceShip{
 	}
 	move_player(){
 		if (!this.destroyed){
-			if (keyState["ArrowUp"] || keyState["w"]){
+			var wall_collision = this.collision_detection.get_rect_wall_collision;
+			if ((keyState["ArrowUp"] || keyState["w"]) && !wall_collision.rect_over_canvas){
 				this.y -= this.speed * this.dt;
 			}
 			if (keyState["ArrowLeft"] || keyState["a"]){
 				this.x -= this.speed * this.dt;
 			}
-			if (keyState["ArrowDown"] || keyState["s"]){
+			if ((keyState["ArrowDown"] || keyState["s"]) && !wall_collision.rect_under_canvas){
 				this.y += this.speed * this.dt;
 			}
 			if (keyState["ArrowRight"] || keyState["d"]){
