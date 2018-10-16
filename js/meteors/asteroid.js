@@ -36,6 +36,10 @@ class Asteroid{
 		}
 	}
 }
+
+var asteroids_at_once = 2
+var asteroids_thrown = 0
+
 function createAsteroid(dt,score){
 	if (dt){
 		if (asteroids_thrown < 0){

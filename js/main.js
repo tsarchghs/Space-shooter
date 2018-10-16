@@ -55,11 +55,6 @@ buttons = [playButton,infoButton,infoButton,playButton,replayButton,homeButton];
 var lastTime;
 var asteroids = [];
 var pickups = [];
-var asteroids_at_once = 2
-var asteroids_thrown = 0
-var pickups_at_once = 1;
-var pickups_thrown = 10;
-var pickups_thrown_reset = 10;
 var logo = new ImageClass(ctx,100,10,900,300,"img/ui/logo.png");
 
 game_scene = new Game(player,health,score,pickups,asteroids,gameOver,replayButton,homeButton);
