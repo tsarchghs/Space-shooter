@@ -9,6 +9,7 @@ class Game{
 		this.replayButton = replayButton;
 		this.homeButton = homeButton;
 		this.dt = 0;
+		this.show = false;
 	}
 	get draw(){
 		this.reDraw();
