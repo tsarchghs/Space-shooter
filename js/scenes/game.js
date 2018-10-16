@@ -102,5 +102,6 @@ class Game{
 	    }
 		createAsteroid(this.dt,score.score);
 		createHealthPickUp(this.dt);
+		createPowerUpPickUp(this.dt);
 	}
 }
