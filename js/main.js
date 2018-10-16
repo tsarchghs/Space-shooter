@@ -39,7 +39,6 @@ document.addEventListener("keyup", (event) => {
 	keyState[event.key] = false;
 })
 player = new Player_SpaceShip(ctx,canvas.width/2 - 50,canvas.height - 100,100,70,500);
-console.log(canvas.height);
 gameOver = new ImageClass(ctx,10,10,900,300,"img/ui/gameOver.png");
 CollisionDetector = new CollisionDetection();
 keyState = [];
@@ -63,37 +62,28 @@ var pickups_thrown = 10;
 var pickups_thrown_reset = 10;
 var logo = new ImageClass(ctx,100,10,900,300,"img/ui/logo.png");
 
-show_game_scene = false;
-show_menu_scene = true;
 game_scene = new Game(player,health,score,pickups,asteroids,gameOver,replayButton,homeButton);
+menu_scene = new Menu(canvas,logo,playButton,infoButton,settingsButton);
+
 function gameLoop(){
 	var now = Date.now();
     var dt = (now - lastTime) / 1000.0;
 	canvas.height = window.window.innerHeight;
 	ctx.clearRect(0,0,canvas.width,canvas.height);
-	if (homeButton.pressed){
-		show_game_scene = false;
-		show_menu_scene = true;
-		homeButton.pressed = false;
+	if (menu_scene.playButton.pressed){
+		game_scene.show = true;
+		menu_scene.playButton.pressed = false;
+	} else if (game_scene.homeButton.pressed){
+		game_scene.show = false;
+		menu_scene.show = true;
 		game_scene.reset;
+		game_scene.homeButton.pressed = false
 	}
-	if (show_game_scene){
+	if (game_scene.show){
 		game_scene.draw;
 		game_scene.dt = dt;
-	} else if (show_menu_scene) {
-		logo.x = canvas.width/2 - (logo.w / 2);
-		logo.draw;
-		playButton.x = canvas.width/2 - (playButton.w / 2) - 250;
-		playButton.draw;
-		infoButton.x = playButton.x + playButton.w + 10;
-		infoButton.draw;
-		settingsButton.x = infoButton.x + infoButton.w + 10;
-		settingsButton.draw;
-		if (playButton.pressed){
-			playButton.pressed = false;
-			show_menu_scene = false;
-			show_game_scene = true;
-		}
+	} else if (menu_scene.show) {
+		menu_scene.draw;
 	}
 	lastTime = now;
 	window.requestAnimationFrame(gameLoop);
