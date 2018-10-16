@@ -20,3 +20,19 @@ class PowerUp_pickup{
 		this.y += this.dt * this.drop_speed;
 	}
 }
+var powerUp_pickups_at_once = 0.5;
+var powerUp_pickups_thrown = 10;
+var powerUp_pickups_thrown_reset = 10;
+
+function createPowerUpPickUp(dt){
+	if (dt){
+		if (powerUp_pickups_at_once > powerUp_pickups_thrown){
+			x = Math.floor((Math.random() * canvas.width) + 1);
+			y = Math.floor((Math.random() * 60) + 1) * -1;
+			powerUp_pickup = new PowerUp_pickup(ctx,x,y,30,30,"img/pickUps/powerUpLv2.png",2);
+			pickups.push(["powerUp_pickup",powerUp_pickup]);
+			powerUp_pickups_thrown = powerUp_pickups_thrown_reset;
+		}
+		powerUp_pickups_thrown -= powerUp_pickups_at_once * dt;
+	}
+}
