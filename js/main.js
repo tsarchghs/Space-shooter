@@ -1,7 +1,8 @@
 
 canvas = document.getElementById("canvas");
-canvas.width = window.innerWidth - 50;
-canvas.height = window.window.innerHeight - 50;
+canvas.width = 916;
+canvas.height = window.window.innerHeight;
+
 ctx = canvas.getContext("2d");
 function getMousePos(canvas, evt) {
   var rect = canvas.getBoundingClientRect(), // abs. size of element
@@ -38,7 +39,8 @@ document.addEventListener("keyup", (event) => {
 	keyState[event.key] = false;
 })
 player = new Player_SpaceShip(ctx,canvas.width/2 - 50,canvas.height - 100,100,70,500);
-gameOver = new ImageClass(ctx,100,10,900,300,"img/ui/gameOver.png");
+console.log(canvas.height);
+gameOver = new ImageClass(ctx,10,10,900,300,"img/ui/gameOver.png");
 CollisionDetector = new CollisionDetection();
 keyState = [];
 score = new Score(ctx,canvas.width/2,10,25,30,0);
@@ -51,7 +53,6 @@ playButton = new Button(ctx,undefined,300,250,250,"img/ui/buttons/playButton.png
 replayButton = new Button(ctx,undefined,370,125,125,"img/ui/buttons/replayButton.png");
 homeButton = new Button(ctx,undefined,370,125,125,"img/ui/buttons/homeButton.png");
 buttons = [playButton,infoButton,infoButton,playButton,replayButton,homeButton];
-
 var lastTime;
 var asteroids = [];
 var pickups = [];
@@ -68,8 +69,7 @@ game_scene = new Game(player,health,score,pickups,asteroids,gameOver,replayButto
 function gameLoop(){
 	var now = Date.now();
     var dt = (now - lastTime) / 1000.0;
-	canvas.width = window.innerWidth - 50;
-	canvas.height = window.window.innerHeight - 50;
+	canvas.height = window.window.innerHeight;
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 	if (homeButton.pressed){
 		show_game_scene = false;
