@@ -2,6 +2,7 @@ class CollisionDetection{
 	constructor(){
 		this.rect1;
 		this.rect2;
+		this.canvas_height;
 	}
 	get get_rect_rect_collision(){
 		return this.rect_rect_collision();
@@ -19,5 +20,16 @@ class CollisionDetection{
 				return false;
 			}
 		}
+	}
+	get get_rect_wall_collision(){
+		if (this.canvas_height || this.canvas_height == 0){
+			return this.rect_wall_collision();
+		}
+	}
+	rect_wall_collision() {
+		var wall_collision = {}
+		wall_collision.rect_over_canvas = this.rect1.y < 0;
+		wall_collision.rect_under_canvas = this.rect1.y + this.rect1.h > this.canvas_height;
+		return wall_collision;
 	}
 }
