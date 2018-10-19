@@ -1,9 +1,10 @@
 class Asteroid{
-	constructor(ctx,health,x,y,w,h,speed,dt){
+	constructor(ctx,health,x,y,w,h,asteroid_image_url){
 		this.health = health;
 		this.destroyed = false;
 		this.ctx = ctx;
-		this.image = document.getElementById("asteroid");
+		this.image = new Image();
+		this.image.src = asteroid_image_url;
 		this.explosion_images = []
 		for (var x=1;x<=27;x++){
 			var explosion_img = new Image();
@@ -14,8 +15,7 @@ class Asteroid{
 		this.y = y;
 		this.w = w;
 		this.h = h;
-		this.speed = speed;
-		this.dt = dt;
+		this.dt;
 	}
 	get draw(){
 		this.reDraw();
@@ -39,20 +39,27 @@ class Asteroid{
 
 var asteroids_at_once = 2
 var asteroids_thrown = 0
-
+//meteorBrown_big1
 function createAsteroid(dt,score){
 	if (dt){
 		if (asteroids_thrown < 0){
 			asteroids_thrown = 2;
 		}
 		if (asteroids_at_once > asteroids_thrown){
+			random = Math.floor((Math.random() * 15));
 			x = Math.floor((Math.random() * canvas.width) + 1);
 			y = Math.floor((Math.random() * 60) * -1);
-			asteroid = new Asteroid(ctx,100,undefined,undefined,50,50,undefined);
+			if (random > 3){
+				size = "small";
+				asteroid = new Asteroid(ctx,100,undefined,undefined,50,50,"img/meteors/meteorBrown_small1.png");
+			} else {
+				size = "big";
+				asteroid = new Asteroid(ctx,200,undefined,undefined,100,100,"img/meteors/meteorBrown_big1.png");
+			}
 			asteroid.x  = x;
 			asteroid.y = y;
 			asteroid.speed = 150 + (score * 0.01);
-			asteroids.push(asteroid);
+			asteroids.push({"size":size,"object":asteroid,"x_speed":0,"y_speed":asteroid.speed});
 			asteroids_thrown++;
 		}
 		asteroids_thrown -= asteroids_at_once * dt;

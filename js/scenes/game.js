@@ -10,6 +10,7 @@ class Game{
 		this.homeButton = homeButton;
 		this.dt = 0;
 		this.show = false;
+		this.ctx = document.getElementById("canvas").getContext("2d");
 	}
 	get draw(){
 		this.reDraw();
@@ -76,31 +77,55 @@ class Game{
 			this.replayButton.draw;
 		}
 		if (this.asteroids){
-			for (var asteroid in this.asteroids){
-				if (!this.asteroids[asteroid].destroyed){
-					CollisionDetector.rect1 = this.asteroids[asteroid];
-					for (var i in this.player.lasers){
-						var laser = this.player.lasers[i];
-						CollisionDetector.rect2 = laser;
-						if (CollisionDetector.get_rect_rect_collision){
-							this.asteroids[asteroid].health -= this.player.shoot_damage;
-							if (this.asteroids[asteroid].health <= 0  && this.health.health){
-								this.score.score += 100;
-								this.asteroids[asteroid].destroyed = true;
-							}
-							this.player.lasers.splice(i,1);
-						}
-					}
-				}
-				asteroid = this.asteroids[asteroid];
+			for (var i in this.asteroids){
+				var create_asteroids_in_end = []
 		    	asteroid.draw;
-		    	asteroid.y += asteroid.speed * this.dt;
+		    	asteroid.x += this.asteroids[i].x_speed * this.dt;
+		    	asteroid.y += this.asteroids[i].y_speed * this.dt;
 		    	if (asteroid.y > canvas.height){
 		    		if (this.health.health && !asteroid.destroyed) {
 		    			this.health.health -= 1;
 		    		}
 		    		this.asteroids.splice(asteroid,1);
 		    	}
+		    	if (this.asteroids[i]){
+					asteroid = this.asteroids[i].object;
+		    	} else {
+		    		asteroid = {"destroyed":true};	
+		    	}
+				if (!asteroid.destroyed){
+					CollisionDetector.rect1 = asteroid;
+					for (var i in this.player.lasers){
+						var laser = this.player.lasers[i];
+						CollisionDetector.rect2 = laser;
+						if (CollisionDetector.get_rect_rect_collision){
+							asteroid.health -= this.player.shoot_damage;
+							if (asteroid.health <= 0  && this.health.health){
+								this.score.score += 100;
+								asteroid.destroyed = true;
+							} else {
+								var small_asteroid = JSON.parse(JSON.stringify(asteroid));
+								small_asteroid.w /= 2;
+								small_asteroid.h /= 2;
+								small_asteroid.health /= 2;
+								small_asteroid.x = asteroid.x + (asteroid.w / 2);
+								small_asteroid.y = asteroid.y
+								var asteroid_1 = new Asteroid(this.ctx,100,30,30,50,50,"img/meteors/meteorBrown_small1.png")
+								this.asteroids[i].object = asteroid_1;
+								this.asteroids[i].object.y_speed = -300;
+								//create_asteroids_in_end.push({"size":size,"object":asteroid_1,"x_speed":300,"y_speed":300})
+							}
+							this.player.lasers.splice(i,1);
+						}
+					}
+				}
+				for (var i in create_asteroids_in_end){
+					if (create_asteroids_in_end[i]){
+						this.asteroids.push(create_asteroids_in_end[i]);
+						console.log(this.asteroids);
+					}
+					create_asteroids_in_end = [];
+				}
 			}
 		}
 		createAsteroid(this.dt,score.score);

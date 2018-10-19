@@ -20,7 +20,7 @@ class PowerUp_pickup{
 		this.y += this.dt * this.drop_speed;
 	}
 }
-var powerUp_pickups_at_once = 0.5;
+var powerUp_pickups_at_once = 2;
 var powerUp_pickups_thrown = 10;
 var powerUp_pickups_thrown_reset = 10;
 
