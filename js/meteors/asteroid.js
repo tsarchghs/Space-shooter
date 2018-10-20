@@ -51,14 +51,18 @@ function createAsteroid(dt,score){
 			y = Math.floor((Math.random() * 60) * -1);
 			if (random > 3){
 				size = "small";
-				asteroid = new Asteroid(ctx,100,undefined,undefined,50,50,"img/meteors/meteorBrown_small1.png");
+				var asteroid = new Asteroid(ctx,100,undefined,undefined,50,50,"img/meteors/meteorBrown_small1.png");
 			} else {
 				size = "big";
-				asteroid = new Asteroid(ctx,200,undefined,undefined,100,100,"img/meteors/meteorBrown_big1.png");
+				var asteroid = new Asteroid(ctx,200,undefined,undefined,100,100,"img/meteors/meteorBrown_big1.png");
 			}
 			asteroid.x  = x;
 			asteroid.y = y;
-			asteroid.speed = 150 + (score * 0.01);
+			if (size === "small"){
+				asteroid.speed = 150 + (score * 0.01);
+			} else {
+				asteroid.speed = 150 + (score * 0.001);
+			}
 			asteroids.push({"size":size,"object":asteroid,"x_speed":0,"y_speed":asteroid.speed});
 			asteroids_thrown++;
 		}
