@@ -104,6 +104,7 @@ class Game{
 								this.score.score += 100;
 								asteroid.destroyed = true;
 							} else {
+								asteroid.destroyed = true;
 								var small_meteor_image = new Image();
 								small_meteor_image.src = "img/meteors/meteorBrown_small1.png";
 								var small_asteroid = new Asteroid(ctx,100,undefined,undefined,50,50,"img/meteors/meteorBrown_small1.png");
