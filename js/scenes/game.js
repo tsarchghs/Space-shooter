@@ -78,7 +78,7 @@ class Game{
 		}
 		if (this.asteroids){
 			for (var i in this.asteroids){
-				var create_asteroids_in_end = []
+				var asteroid = this.asteroids[i].object;
 		    	asteroid.draw;
 		    	asteroid.x += this.asteroids[i].x_speed * this.dt;
 		    	asteroid.y += this.asteroids[i].y_speed * this.dt;
@@ -95,8 +95,8 @@ class Game{
 		    	}
 				if (!asteroid.destroyed){
 					CollisionDetector.rect1 = asteroid;
-					for (var i in this.player.lasers){
-						var laser = this.player.lasers[i];
+					for (var p in this.player.lasers){
+						var laser = this.player.lasers[p];
 						CollisionDetector.rect2 = laser;
 						if (CollisionDetector.get_rect_rect_collision){
 							asteroid.health -= this.player.shoot_damage;
@@ -104,27 +104,23 @@ class Game{
 								this.score.score += 100;
 								asteroid.destroyed = true;
 							} else {
-								var small_asteroid = JSON.parse(JSON.stringify(asteroid));
-								small_asteroid.w /= 2;
-								small_asteroid.h /= 2;
-								small_asteroid.health /= 2;
-								small_asteroid.x = asteroid.x + (asteroid.w / 2);
-								small_asteroid.y = asteroid.y
-								var asteroid_1 = new Asteroid(this.ctx,100,30,30,50,50,"img/meteors/meteorBrown_small1.png")
-								this.asteroids[i].object = asteroid_1;
-								this.asteroids[i].object.y_speed = -300;
-								//create_asteroids_in_end.push({"size":size,"object":asteroid_1,"x_speed":300,"y_speed":300})
+								var small_meteor_image = new Image();
+								small_meteor_image.src = "img/meteors/meteorBrown_small1.png";
+								var small_asteroid = new Asteroid(ctx,100,undefined,undefined,50,50,"img/meteors/meteorBrown_small1.png");
+								var small_asteroid2 = new Asteroid(ctx,100,undefined,undefined,50,50,"img/meteors/meteorBrown_small1.png");
+
+								small_asteroid.x = asteroid.x;
+								small_asteroid.y = asteroid.y;
+
+								small_asteroid2.ctx = ctx;
+								small_asteroid2.y = asteroid.y;
+								small_asteroid2.x = asteroid.x;
+								this.asteroids.push({"size":size,"object":small_asteroid,"x_speed":25,"y_speed":400})
+								this.asteroids.push({"size":size,"object":small_asteroid2,"x_speed":-25,"y_speed":400})
 							}
-							this.player.lasers.splice(i,1);
+							this.player.lasers.splice(p,1);
 						}
 					}
-				}
-				for (var i in create_asteroids_in_end){
-					if (create_asteroids_in_end[i]){
-						this.asteroids.push(create_asteroids_in_end[i]);
-						console.log(this.asteroids);
-					}
-					create_asteroids_in_end = [];
 				}
 			}
 		}
