@@ -20,8 +20,5 @@ class Menu{
 		this.infoButton.draw;
 		this.settingsButton.x = this.infoButton.x + this.infoButton.w + 10;
 		this.settingsButton.draw;
-		if (this.playButton.pressed){
-			this.show = false;
-		}
 	}
 }
