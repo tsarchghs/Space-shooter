@@ -23,12 +23,12 @@ window.addEventListener("mousemove", (event) => {
 });
 window.addEventListener("mouseup", (event) => {
 	for (var button in buttons){
-		buttons[button].mousePressed = false;
+		buttons[button].mouseClicked = true;
 	}
 })
 window.addEventListener("mousedown", (event) => {
 	for (var button in buttons){
-		buttons[button].mousePressed = true;
+		buttons[button].mouseClicked = false;
 	}
 })
 
