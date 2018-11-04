@@ -36,36 +36,3 @@ class Asteroid{
 		}
 	}
 }
-
-var asteroids_at_once = 2
-var asteroids_thrown = 0
-//meteorBrown_big1
-function createAsteroid(dt,score){
-	if (dt){
-		if (asteroids_thrown < 0){
-			asteroids_thrown = 2;
-		}
-		if (asteroids_at_once > asteroids_thrown){
-			random = Math.floor((Math.random() * 15));
-			x = Math.floor((Math.random() * canvas.width) + 1);
-			y = Math.floor((Math.random() * 60) * -1);
-			if (random > 3){
-				size = "small";
-				var asteroid = new Asteroid(ctx,100,undefined,undefined,50,50,"img/meteors/meteorBrown_small1.png");
-			} else {
-				size = "big";
-				var asteroid = new Asteroid(ctx,200,undefined,undefined,100,100,"img/meteors/meteorBrown_big1.png");
-			}
-			asteroid.x  = x;
-			asteroid.y = y;
-			if (size === "small"){
-				asteroid.speed = 150 + (score * 0.01);
-			} else {
-				asteroid.speed = 150 + (score * 0.001);
-			}
-			asteroids.push({"size":size,"object":asteroid,"x_speed":0,"y_speed":asteroid.speed});
-			asteroids_thrown++;
-		}
-		asteroids_thrown -= asteroids_at_once * dt;
-	}
-}
