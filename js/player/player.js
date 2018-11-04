@@ -126,4 +126,12 @@ class Player_SpaceShip{
 			this.h += 10;
 		}
 	}
+	get get_reset(){
+		this.reset();
+	}
+	reset(){
+		this.player_image.src = "img/player/playerShip_lv1.png";
+		this.shoot_damage = 100;
+		this.lv = 1;
+	}
 }

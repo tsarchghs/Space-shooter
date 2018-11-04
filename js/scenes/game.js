@@ -1,16 +1,20 @@
 class Game{
-	constructor(player,health,score,pickups,asteroids,gameOver,replayButton,homeButton){
+	constructor(player,health,score,pickups,asteroids,gameOver,replayButton,homeButton,
+					asteroids_at_once=2,
+					asteroids_thrown=0){
 		this.player = player;
 		this.health = health;
 		this.score = score;
 		this.pickups = pickups;
-		this.asteroids = asteroids
+		this.asteroids = []
 		this.gameOver = gameOver;
 		this.replayButton = replayButton;
 		this.homeButton = homeButton;
 		this.dt = 0;
 		this.show = false;
 		this.ctx = document.getElementById("canvas").getContext("2d");
+		this.asteroids_at_once = asteroids_at_once;
+		this.asteroids_thrown = asteroids_thrown;
 	}
 	get draw(){
 		this.reDraw();
@@ -26,6 +30,9 @@ class Game{
 		this.score.score = 0;
 		this.health.health = 10;
 		this.score.y = 10;
+		this.player.get_reset;
+		this.asteroids = [];
+		console.log("Reseting values");
 	}
 	reDraw(){
 		var canvas = document.getElementById("canvas")
@@ -116,8 +123,8 @@ class Game{
 								small_asteroid2.ctx = ctx;
 								small_asteroid2.y = asteroid.y;
 								small_asteroid2.x = asteroid.x;
-								this.asteroids.push({"size":size,"object":small_asteroid,"x_speed":25,"y_speed":400})
-								this.asteroids.push({"size":size,"object":small_asteroid2,"x_speed":-25,"y_speed":400})
+								this.asteroids.push({"size":"small","object":small_asteroid,"x_speed":25,"y_speed":400})
+								this.asteroids.push({"size":"small","object":small_asteroid2,"x_speed":-25,"y_speed":400})
 							}
 							this.player.lasers.splice(p,1);
 						}
@@ -125,8 +132,37 @@ class Game{
 				}
 			}
 		}
-		createAsteroid(this.dt,score.score);
+		this.createAsteroid();
 		createHealthPickUp(this.dt);
 		createPowerUpPickUp(this.dt);
+	}
+	createAsteroid(){
+		if (this.dt){
+			if (this.asteroids_thrown < 0){
+				this.asteroids_thrown = 2;
+			}
+			if (this.asteroids_at_once > this.asteroids_thrown){
+				var random = Math.floor((Math.random() * 15));
+				var x = Math.floor((Math.random() * canvas.width) + 1);
+				var y = Math.floor((Math.random() * 60) * -1);
+				if (random > 3){
+					var size = "small";
+					var asteroid = new Asteroid(ctx,100,undefined,undefined,50,50,"img/meteors/meteorBrown_small1.png");
+				} else {
+					var size = "big";
+					var asteroid = new Asteroid(ctx,200,undefined,undefined,100,100,"img/meteors/meteorBrown_big1.png");
+				}
+				asteroid.x  = x;
+				asteroid.y = y;
+				if (size === "small"){
+					asteroid.speed = 150 + (this.score.score * 0.01);
+				} else {
+					asteroid.speed = 150 + (this.score.score * 0.001);
+				}
+				this.asteroids.push({"size":size,"object":asteroid,"x_speed":0,"y_speed":asteroid.speed});
+				this.asteroids_thrown++;
+			}
+			this.asteroids_thrown -= this.asteroids_at_once * this.dt;
+		}
 	}
 }
