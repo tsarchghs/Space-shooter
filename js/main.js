@@ -21,15 +21,12 @@ window.addEventListener("mousemove", (event) => {
 		buttons[button].screenY = pos.y;
 	}
 });
+mouseClicked = false;
 window.addEventListener("mouseup", (event) => {
-	for (var button in buttons){
-		buttons[button].mouseClicked = true;
-	}
+	mouseClicked = true
 })
 window.addEventListener("mousedown", (event) => {
-	for (var button in buttons){
-		buttons[button].mouseClicked = false;
-	}
+	mouseClicked = false
 })
 
 document.addEventListener("keydown", (event) => {

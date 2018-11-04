@@ -9,7 +9,6 @@ class Button{
 		this.button_image.src = button_image_url;
 		this.screenX;
 		this.screenY;
-		this.mouseClicked;
 		this.pressed = false;
 	}
 	get draw(){
@@ -18,12 +17,12 @@ class Button{
 	reDraw(){
 		this.ctx.beginPath();
 		this.ctx.drawImage(this.button_image,this.x,this.y,this.w,this.h);
-		if (this.screenX && this.screenY && this.mouseClicked){
+		if (this.screenX && this.screenY && mouseClicked){
 			if (this.x <= this.screenX && this.screenX <= this.x + this.w &&
 				this.y <= this.screenY && this.screenY <= this.y + this.h){
 				this.pressed = true;
+				mouseClicked = false;
 			}
 		}
-		this.mouseClicked = false
 	}
 }
